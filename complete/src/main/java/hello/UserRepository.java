@@ -10,5 +10,6 @@ import hello.StoreRepository;
 // CRUD refers Create, Read, Update, Delete
 
 public interface UserRepository extends CrudRepository<User, Integer> {
+//public interface UserRepository extends CrudRepository<User, Integer> {
 
 }

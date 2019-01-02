@@ -9,6 +9,10 @@ import javax.persistence.Id;
 public class Store {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
+    //@GeneratedValue(strategy=GenerationType.SEQUENCE, name="native")
+    //@GeneratedValue(strategy=GenerationType.SEQUENCE)
+    //@SequenceGenerator( name="native")
+		    //, sequenceName="subscription_id_store", allocationSize=7)
     private Integer id;
 
     private String name;

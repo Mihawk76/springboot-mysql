@@ -9,6 +9,9 @@ import javax.persistence.Id;
 public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
+    //@GeneratedValue(strategy=GenerationType.SEQUENCE, name="user_id")
+    //@GeneratedValue(strategy=GenerationType.SEQUENCE)
+    //@SequenceGenerator( name="user_id", sequenceName="subscription_id_user", allocationSize=7)
     private Integer id;
 
     private String name;
