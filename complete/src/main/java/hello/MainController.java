@@ -4,10 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import java.util.List;
+import java.io.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,9 +44,10 @@ public class MainController {
 		//Store soros = new Store();
 		List<Store> soros = (List<Store>) storeRepository.findAll();
 		//Iterator<Store> iter
-	      	model.addAttribute("name", soros.get(0).getId());
+	      	//model.addAttribute("name", soros.get(0).getId());
+	      	model.addAttribute("name", soros);
 		Store alfa = new Store();
-		soros.add(alfa);
+		//soros.add(alfa);
 		log.debug("debug level log");
 		//log.info("info level log");
 		//log.info(storeRepository.findAll());
@@ -76,8 +80,20 @@ public class MainController {
 		// @RequestParam means it is a parameter from the GET or POST request
 		
 		//Store n = new Store();
+		String jsonString = "{\"k1\":\"v1\",\"k2\":\"v2\"}";
 		User n = new User();
-		n.setName(name);
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			//JsonNode actualObj = mapper.readTree(json);
+			JsonNode actualObj = mapper.readTree(jsonString);
+			JsonNode aK1 = actualObj.get("k1");
+			n.setName(aK1.asText());
+			log.error(aK1.asText());
+			//log.error(actualObj.get(0).textValue());
+		} catch (IOException e) {
+			throw new RuntimeException("Error :" + e);
+			}
+		//n.setName(name);
 		n.setEmail(email);
 		//storeRepository.save(n);
 		userRepository.save(n);
@@ -85,15 +101,27 @@ public class MainController {
 	}
 	@GetMapping(path="/addTh") // Map ONLY GET Requests
 	//public @ResponseBody String addNewStore (@RequestParam String name
-	public @ResponseBody String addNewTh (@RequestParam Integer SubId
-			, @RequestParam String TimeStamps, @RequestParam Integer Value) {
+	public @ResponseBody String addNewTh (@RequestParam String json, @RequestParam Integer SubId
+			, @RequestParam String TimeStamps, @RequestParam Integer Value) 
+		/*throws JsonParseException, IOException*/ {
 		// @ResponseBody means the returned String is the response, not a view name
 		// @RequestParam means it is a parameter from the GET or POST request
 		
 		//Store n = new Store();
 		Th n = new Th();
+		String jsonString = "{\"k1\":\"v1\",\"k2\":\"v2\"}";
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			//JsonNode actualObj = mapper.readTree(json);
+			JsonNode actualObj = mapper.readTree(jsonString);
+			JsonNode aK1 = actualObj.get("k1");
+			n.setTimeStamps(aK1.asText());
+			//log.error(actualObj.get(0).textValue());
+		} catch (IOException e) {
+			throw new RuntimeException("Error :" + e);
+			}
 		n.setSubId(SubId);
-		n.setTimeStamps(TimeStamps);
+		//n.setTimeStamps(TimeStamps);
 		n.setValue(Value);
 		//storeRepository.save(n);
 		thRepository.save(n);
