@@ -99,10 +99,43 @@ public class MainController {
 		userRepository.save(n);
 		return "Saved";
 	}
+	@RequestMapping(
+	  value = "/json",
+	      headers = "Accept=application/json")
+		@ResponseBody
+		public String getFoosAsJsonFromBrowser(@RequestParam String Json) {
+		Th n = new Th();
+		String jsonString = "{\"k1\":\"v1\",\"k2\":\"v2\"}";
+		//log.error(json);
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			//JsonNode actualObj = mapper.readTree(json);
+			JsonNode actualObj = mapper.readTree(Json);
+			JsonNode timestamps = actualObj.get("timestamps");
+			log.error(jsonString);
+			log.error(timestamps.asText());
+			n.setTimeStamps(timestamps.asText());
+			JsonNode id = actualObj.get("id");
+			n.setSubId(id.asInt());
+			JsonNode value = actualObj.get("value");
+			n.setValue(value.asInt());
+			//log.error(actualObj.get(0).textValue());
+		} catch (IOException e) {
+			throw new RuntimeException("Error :" + e);
+			}
+		//n.setSubId(SubId);
+		//n.setTimeStamps(TimeStamps);
+		//n.setValue(Value);
+		//storeRepository.save(n);
+		thRepository.save(n);
+		return Json;
+		}
 	@GetMapping(path="/addTh") // Map ONLY GET Requests
 	//public @ResponseBody String addNewStore (@RequestParam String name
-	public @ResponseBody String addNewTh (@RequestParam String json, @RequestParam Integer SubId
-			, @RequestParam String TimeStamps, @RequestParam Integer Value) 
+	//public @ResponseBody String addNewTh (@RequestParam String json, @RequestParam Integer SubId
+	public @ResponseBody String addNewTh (@RequestParam Integer SubId
+			, @RequestParam String TimeStamps, @RequestParam Integer Value
+			, @RequestParam String json) 
 		/*throws JsonParseException, IOException*/ {
 		// @ResponseBody means the returned String is the response, not a view name
 		// @RequestParam means it is a parameter from the GET or POST request
@@ -110,6 +143,7 @@ public class MainController {
 		//Store n = new Store();
 		Th n = new Th();
 		String jsonString = "{\"k1\":\"v1\",\"k2\":\"v2\"}";
+		log.error(json);
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			//JsonNode actualObj = mapper.readTree(json);
