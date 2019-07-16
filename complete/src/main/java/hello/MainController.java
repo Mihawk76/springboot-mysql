@@ -1,11 +1,21 @@
 package hello;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+//import org.springframework.hateoas.EntityLink;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import java.util.List;
 import java.io.*;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,8 +31,10 @@ import hello.StoreRepository;
 import hello.Th;
 import hello.ThRepository;
 
-@Controller    // This means that this class is a Controller
-@RequestMapping(path="/demo") // This means URL's start with /demo (after Application path)
+@RestController    // This means that this class is a Controller
+@RequestMapping(path="/demo",
+	produces="application/json") // This means URL's start with /demo (after Application path)
+@CrossOrigin(origins="*")
 public class MainController {
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
@@ -49,6 +61,7 @@ public class MainController {
 		Store alfa = new Store();
 		//soros.add(alfa);
 		log.debug("debug level log");
+		//log.error(soros.get(0).getName());
 		//log.info("info level log");
 		//log.info(storeRepository.findAll());
 		log.error("error level log");
@@ -166,6 +179,8 @@ public class MainController {
 	public @ResponseBody Iterable<Store> getAllStores() {
 	//public @ResponseBody Iterable<User> getAllUsers() {
 		// This returns a JSON or XML with the users
+		log.debug("request called");
+		log.error("request called");
 		return storeRepository.findAll();
 		//return userRepository.findAll();
 	}
